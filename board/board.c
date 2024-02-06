@@ -231,6 +231,10 @@ void board_init_clock(void)
     /* Bump up DCDC voltage to 1175mv */
     pcfg_dcdc_set_voltage(HPM_PCFG, 1175);
 
+    /* Set XTAL24M as the PLL reference clock */
+    pllctlv2_select_reference_clock(HPM_PLLCTLV2, 0, 0);
+    pllctlv2_select_reference_clock(HPM_PLLCTLV2, 1, 0);
+
     /* Configure CPU to 360MHz, AXI/AHB to 120MHz */
     sysctl_config_cpu0_domain_clock(HPM_SYSCTL, clock_source_pll0_clk0, 2, 3);
     /* Configure PLL0 Post Divider */
