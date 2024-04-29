@@ -28,7 +28,7 @@ ps               - List threads in the system.
 free             - Show the memory usage in the system.
 pin              - pin [option]
 ```
-测试时请使用 `uart_dma_sample uart2` 命令
+测试时请使用 `uart_dma_sample` 命令
 
 ## 运行现象
 ```console

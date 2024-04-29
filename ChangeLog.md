@@ -1,5 +1,14 @@
 # Change Log
 
+## v1.5.0
+
+- Integrated hpm_sdk v1.5.0
+- Updated:
+    - usb stack switched to cherryUSB for usb samples
+- Added:
+    - added interrupt vector mode and preemptive mode
+    - systemView component
+
 ## 1.4.1
 - Fixed:
   - Transmission error while enabling DMA in I2C driver

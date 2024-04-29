@@ -86,7 +86,13 @@ SECTIONS
         __rtmsymtab_end = .;
 
         /* RT-Thread related sections - end */
-        
+
+        /* section information for usbh class */
+        . = ALIGN(8);
+        __usbh_class_info_start__ = .;
+        KEEP(*(.usbh_class_info))
+        __usbh_class_info_end__ = .;
+
     } > ILM
     
     PROVIDE (__etext = .);

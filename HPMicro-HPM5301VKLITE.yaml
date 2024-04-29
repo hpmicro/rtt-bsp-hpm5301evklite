@@ -50,7 +50,7 @@ features_zh:
 
 pkg_type: Board_Support_Packages
 pkg_vendor: HPMicro
-pkg_version: 1.4.1
+pkg_version: 1.5.0
 
 template_projects:
 - project_name: blink_led

@@ -10,6 +10,7 @@
 #define HPMSOC_HAS_HPMSDK_DMAV2
 #define RT_USING_LIBC
 #define RT_USING_NEWLIBC
+#define USB_HOST_MCU_CORE HPM_CORE0
 #define _POSIX_C_SOURCE 1
 #define _REENT_SMALL
 #define __RTTHREAD__
