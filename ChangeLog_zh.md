@@ -1,5 +1,20 @@
 # 更新
 
+## v1.6.0
+
+- 整合了hpm_sdk v1.6.0
+- 修复:
+    - UART7 和 UART8 TX DMA 相关的宏定义错误问题
+    - uart_v2中的内存泄露问题
+- 更新：
+    - 优化CANFD帧的BRS位控制
+    - 升级CherryUSB协议栈到1.3.1
+    - 为USB例程增加了全速模式相关的描述符
+    - 芯片的数据手册
+- 新增:
+    - SPI 的CS引脚控制选项
+    - 适配了RT-Thread Cache 驱动
+
 ## v1.5.0
 
 - 整合了hpm_sdk v1.5.0
