@@ -1,5 +1,20 @@
 # 更新
 
+## v1.9.0
+
+- 整合了 hpm_sdk v1.9.0
+
+- 更新：
+    - 升级CherryUSB协议栈到1.4.3
+    - `uart/uart_v2`驱动支持可配置的IRQ优先级
+    - `spi`驱动支持可配置的IRQ优先级
+    - `i2c`驱动支持可配置的IRQ优先级
+    - `gpio`驱动支持可配置的IRQ优先级
+    - `mcan`驱动支持可配置的IRQ优先级
+
+- 新增:
+    - `spi`驱动增加DSPI/QSPI模式
+
 ## v1.6.0
 
 - 整合了hpm_sdk v1.6.0

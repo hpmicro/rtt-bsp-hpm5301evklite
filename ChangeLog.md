@@ -1,5 +1,20 @@
 # Change Log
 
+## v1.9.0
+
+- Integrated hpm_sdk v1.9.0
+
+- Updated:
+    - Upgrade `CherryUSB` stack to 1.4.3
+    - `uart/uart_v2` driver supports configurable IRQ priority
+    - `spi` driver supports for configurable IRQ priority for 
+    - `i2c` driver support for configurable IRQ priority
+    - `gpio` driver support for configurable IRQ priority
+    - `mcan` driver supports configurable IRQ priority
+
+- Added:
+    - DSPI/QSPI mode added for `spi` driver
+
 ## v1.6.0
 
 - Integrated hpm_sdk v1.6.0

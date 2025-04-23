@@ -20,8 +20,18 @@
 
 extern int rt_hw_uart_init(void);
 
+void rtt_os_tick_clock(void)
+{
+#ifdef HPM_USING_VECTOR_PREEMPTED_MODE
+    clock_add_to_group(BOARD_OS_TIMER_CLK_NAME, 0);
+#else
+    clock_add_to_group(clock_mchtmr0, 0);
+#endif
+}
+
 void rtt_board_init(void)
 {
+    rtt_os_tick_clock();
     board_init_clock();
     board_init_console();
     board_init_pmp();
@@ -35,7 +45,7 @@ void rtt_board_init(void)
     os_tick_config();
 
     /* Configure the USB pins*/
-    board_init_usb_pins();
+    board_init_usb(HPM_USB0);
 
     /* Initialize the UART driver first, because later driver initialization may require the rt_kprintf */
     rt_hw_uart_init();
@@ -79,7 +89,7 @@ void rt_hw_console_output(const char *str)
 
 void app_init_usb_pins(void)
 {
-    board_init_usb_pins();
+    board_init_usb(HPM_USB0);
 }
 
 void rt_hw_cpu_reset(void)
@@ -104,4 +114,24 @@ void rt_hw_cpu_dcache_ops(int ops, void *addr, int size)
     }
 }
 #endif
+
+uint32_t rtt_board_init_adc16_clock(ADC16_Type *ptr, bool clk_src_ahb)
+{
+    uint32_t freq = 0;
+
+    if (ptr == HPM_ADC0) {
+        if (clk_src_ahb) {
+            /* Configure the ADC clock from AHB (@200MHz by default)*/
+            clock_set_adc_source(clock_adc0, clk_adc_src_ahb0);
+        } else {
+            /* Configure the ADC clock from pll0_clk0 divided by 2 (@200MHz by default) */
+            clock_set_adc_source(clock_adc0, clk_adc_src_ana0);
+            clock_set_source_divider(clock_ana0, clk_src_pll0_clk2, 2U);
+        }
+        clock_add_to_group(clock_adc0, 0);
+        freq = clock_get_frequency(clock_adc0);
+    }
+
+    return freq;
+}
 

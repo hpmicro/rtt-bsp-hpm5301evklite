@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 HPMicro
+ * Copyright 2021-2025 HPMicro
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
@@ -12,7 +12,7 @@ NONCACHEABLE_SIZE = DEFINED(_noncacheable_size) ? _noncacheable_size : 0x8000;
 MEMORY
 {
     ILM (wx) : ORIGIN = 0, LENGTH = 128K
-    DLM (w) : ORIGIN = 0x80000, LENGTH = 128K
+    DLM (w) : ORIGIN = 0x80300, LENGTH = 128K - 768
     NONCACHEABLE_RAM (wx) : ORIGIN = 0x98000, LENGTH = NONCACHEABLE_SIZE
     AHB_SRAM (w) : ORIGIN = 0xF0300000, LENGTH = 32k
 }
@@ -30,7 +30,7 @@ SECTIONS
         KEEP(*(.vector_table))
         . = ALIGN(8);
     } > ILM
-    
+
     .fast_ram (NOLOAD) : {
         KEEP(*(.fast_ram))
     } > ILM
@@ -56,7 +56,7 @@ SECTIONS
         KEEP (*(.init))
         KEEP (*(.fini))
         . = ALIGN(8);
-        
+
         /*********************************************
          *
          *      RT-Thread related sections - Start
@@ -94,7 +94,7 @@ SECTIONS
         __usbh_class_info_end__ = .;
 
     } > ILM
-    
+
     PROVIDE (__etext = .);
     PROVIDE (_etext = .);
     PROVIDE (etext = .);
@@ -113,7 +113,7 @@ SECTIONS
         . = ALIGN(8);
         __data_start__ = .;
         __global_pointer$ = . + 0x800;
-        
+
         *(.data)
         *(.data*)
         *(.sdata)
@@ -138,10 +138,10 @@ SECTIONS
         PROVIDE(__init_array_end = .);
 
         . = ALIGN(8);
-        PROVIDE(__finit_array_start = .);
-        KEEP(*(SORT_BY_INIT_PRIORITY(.finit_array.*)))
-        KEEP(*(.finit_array))
-        PROVIDE(__finit_array_end = .);
+        PROVIDE(__fini_array_start = .);
+        KEEP(*(SORT_BY_INIT_PRIORITY(.fini_array.*)))
+        KEEP(*(.fini_array))
+        PROVIDE(__fini_array_end = .);
 
         . = ALIGN(8);
         PROVIDE(__ctors_start__ = .);
@@ -171,7 +171,7 @@ SECTIONS
         . = ALIGN(8);
         PROVIDE(__ramfunc_end__ = .);
     } > DLM
-    
+
     .rel : {
         KEEP(*(.rel*))
     } > DLM
@@ -200,7 +200,7 @@ SECTIONS
         _end = .;
         __tbss_end__ = .;
     } > DLM
-    
+
     .stack(NOLOAD) : {
         . = ALIGN(8);
         __stack_base__ = .;
@@ -221,7 +221,7 @@ SECTIONS
      .ahb_sram (NOLOAD) : {
         KEEP(*(.ahb_sram))
     } > AHB_SRAM
-    
+
     .noncacheable.init : AT(etext + __data_end__ - __tdata_start__ + __ramfunc_end__ - __ramfunc_start__) {
         . = ALIGN(8);
         __noncacheable_init_start__ = .;
@@ -233,8 +233,11 @@ SECTIONS
     .noncacheable.bss (NOLOAD) : {
         . = ALIGN(8);
         KEEP(*(.noncacheable))
+        KEEP(*(.noncacheable.non_init))
+        KEEP(*(.noncacheable.non_init.*))
         __noncacheable_bss_start__ = .;
         KEEP(*(.noncacheable.bss))
+        KEEP(*(.noncacheable.bss.*))
         __noncacheable_bss_end__ = .;
         . = ALIGN(8);
     } > NONCACHEABLE_RAM
