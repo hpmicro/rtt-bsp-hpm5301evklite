@@ -52,7 +52,6 @@ _start:
     csrci CSR_MMISC_CTL, 2
 #endif
 
-
     /* System reset handler */
     call reset_handler
 
@@ -63,7 +62,6 @@ _start:
 nmi_handler:
 1:    j 1b
 
-    .global default_irq_handler
     .weak default_irq_handler
     .align 2
 default_irq_handler:
