@@ -17,7 +17,7 @@ void thread_entry(void *arg);
  * 例程导出了 uart_dma_sample 命令到控制终端
  * 命令调用格式：uart_dma_sample uart1
  * 命令解释：命令第二个参数是要使用的串口设备名称，为空则使用默认的串口设备
- * 程序功能：通过串口输出字符串 "hello RT-Thread!"，并通过串口输出接收到的数据，然后打印接收到的数据。
+ * 程序功能：通过串口输出字符串 "hello RT-Thread!"，并通过串口输出接收到的数据。
 */
 
 /* 串口接收消息结构 */
@@ -69,8 +69,6 @@ static void serial_thread_entry(void *parameter)
             rx_buffer[rx_length] = '\0';
             /* 通过串口设备 serial 输出读取到的消息 */
             rt_device_write(serial, 0, rx_buffer, rx_length);
-            /* 打印数据 */
-            rt_kprintf("%s\n",rx_buffer);
         }
     }
 }
@@ -111,8 +109,8 @@ static int uart_dma_sample(int argc, char *argv[])
                sizeof(msg_pool),         /* 存放消息的缓冲区大小 */
                RT_IPC_FLAG_FIFO);        /* 如果有多个线程等待，按照先来先得到的方法分配消息 */
 
-    /* 以 硬件FIFO超时接收及轮询发送方式打开串口设备 */
-    rt_device_open(serial, RT_DEVICE_FLAG_RX_BLOCKING | RT_DEVICE_FLAG_TX_BLOCKING);
+    /* 以非阻塞方式接收及发送方式打开串口设备 */
+    rt_device_open(serial, RT_DEVICE_FLAG_RX_NON_BLOCKING | RT_DEVICE_FLAG_TX_NON_BLOCKING);
     /* 设置接收回调函数 */
     rt_device_set_rx_indicate(serial, uart_input);
     /* 发送字符串 */
@@ -149,7 +147,7 @@ int main(void)
 
 void thread_entry(void *arg)
 {
-    while(1){
+    while(1) {
 #ifdef APP_LED0
         app_led_write(APP_LED0, APP_LED_ON);
         rt_thread_mdelay(500);
